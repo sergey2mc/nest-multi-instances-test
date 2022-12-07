@@ -5,6 +5,7 @@ export function getRedisOptions(configService: ConfigService): RedisOptions['opt
   const options = {
     host: configService.get('REDIS_HOST'),
     port: configService.get('REDIS_PORT'),
+    username: configService.get('REDIS_USER'),
     password: configService.get('REDIS_PASSWORD'),
     db: configService.get('REDIS_DB_INDEX'),
     retryAttempts: 20,
