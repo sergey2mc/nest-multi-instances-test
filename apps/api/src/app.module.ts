@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
+import { CronModule } from './modules/cron/cron.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -10,6 +11,7 @@ import { AppService } from './app.service';
       envFilePath: ['./.env'],
       isGlobal: true,
     }),
+    CronModule,
   ],
   controllers: [AppController],
   providers: [AppService],

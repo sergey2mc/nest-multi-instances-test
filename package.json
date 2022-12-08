@@ -7,10 +7,11 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
-    "build:microservice": "nest build microservice",
+    "build:configs": "nest build configs",
+    "build": "yarn build:configs && nest build",
+    "build:microservice": "yarn build:configs && nest build microservice",
     "build:all": "yarn build && yarn build:microservice",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -39,6 +40,7 @@
     "@nestjs/schedule": "^2.1.0",
     "bull": "^4.10.2",
     "ioredis": "^5.2.4",
+    "moment": "^2.29.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
@@ -73,7 +75,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -81,7 +83,14 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@app/configs(|/.*)$": "<rootDir>/libs/configs/src/$1"
+    }
   }
 }

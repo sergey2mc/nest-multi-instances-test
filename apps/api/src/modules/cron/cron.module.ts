@@ -1,17 +1,28 @@
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ScheduleModule } from '@nestjs/schedule';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { RedisOptions } from 'ioredis';
 
 import { CRON_JOBS_MANAGER, getRedisOptions } from '@app/configs';
 
-import { CronService } from './cron.service';
+import { CronProcessor } from './cron-processor';
 
 @Module({
   imports: [
-    ScheduleModule.forRoot(),
+    ClientsModule.registerAsync([
+      {
+        name: 'JobManagerService',
+        useFactory: (config: ConfigService) => {
+          return {
+            transport: Transport.REDIS,
+            options: getRedisOptions(config),
+          };
+        },
+        inject: [ConfigService],
+      },
+    ]),
     BullModule.registerQueueAsync({
       name: CRON_JOBS_MANAGER,
       useFactory: (config: ConfigService) => {
@@ -22,7 +33,6 @@ import { CronService } from './cron.service';
       inject: [ConfigService],
     }),
   ],
-  providers: [CronService],
-  exports: [CronService],
+  providers: [CronProcessor],
 })
 export class CronModule {}

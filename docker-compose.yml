@@ -2,6 +2,7 @@ version: "3.7"
 services:
   redis:
     image: redis:7.0.5-alpine
+    container_name: redis-rerver
     ports:
       - $REDIS_PORT:$REDIS_PORT
     command: redis-server /etc/redis/redis.conf
@@ -12,6 +13,7 @@ services:
 #      - ./cert/redis-key.key:/etc/redis/redis-key.key
 #      - ./cert/entrust_2048_ca.cer:/etc/redis/entrust_2048_ca.cer
   nginx:
+    container_name: nginx-rerver
     build:
       context: .
       dockerfile: .docker/nginx/Dockerfile
@@ -24,6 +26,7 @@ services:
     ports:
       - $API_PORT:$API_PORT
   api:
+    container_name: api
     build:
       context: .
       dockerfile: .docker/api/Dockerfile
@@ -31,6 +34,7 @@ services:
     expose:
       - $API_PORT
   microservice:
+    container_name: cron-microservice
     build:
       context: .
       dockerfile: .docker/microservice/Dockerfile

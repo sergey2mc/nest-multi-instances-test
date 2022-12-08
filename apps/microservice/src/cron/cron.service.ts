@@ -6,10 +6,12 @@ import { Queue } from 'bull';
 import { combineLatest, from, interval } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
+import { CornJobs, CRON_JOBS_MANAGER } from '@app/configs';
+
 @Injectable()
 export class CronService {
   constructor(
-    @InjectQueue('jobsManager') private readonly queue: Queue,
+    @InjectQueue(CRON_JOBS_MANAGER) private readonly queue: Queue,
   ) {
     interval(60000).pipe(
       switchMap(() => combineLatest([
@@ -42,7 +44,7 @@ export class CronService {
   @Cron('0 * * * * *')
   async doSomethingEveryMinute() {
     return this.queue
-      .add('someJob')
+      .add(CornJobs.SOME_JOB)
       .catch((e) =>
         console.log('ERR: someJob failed', e),
       );

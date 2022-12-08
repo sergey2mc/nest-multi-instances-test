@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RedisOptions, Transport } from '@nestjs/microservices';
 
 import { AppModule } from './app.module';
-import { getRedisOptions } from './redis';
+import { getRedisOptions } from '@app/configs';
 
 async function bootstrap() {
   const configModule = await NestFactory.createApplicationContext(ConfigModule);
