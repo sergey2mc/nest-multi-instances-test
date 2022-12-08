@@ -1,6 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import { RedisOptions } from '@nestjs/microservices';
 
+import * as fs from 'fs';
+import * as path from 'path';
+
 export function getRedisOptions(configService: ConfigService): RedisOptions['options'] {
   const options = {
     host: configService.get('REDIS_HOST'),
@@ -17,7 +20,14 @@ export function getRedisOptions(configService: ConfigService): RedisOptions['opt
   };
 
   return {
-    ...(options.password && { tls: options }),
+    ...(options.password && {
+      tls: {
+        ...options,
+        key: fs.readFileSync(path.join(path.resolve(), './cert/redis-key.key'), 'ascii'),
+        cert: fs.readFileSync(path.join(path.resolve(), './cert/redis-cert.crt'), 'ascii'),
+        ca: fs.readFileSync(path.join(path.resolve(), './cert/entrust_2048_ca.cer'), 'ascii'),
+      }
+    }),
     ...options,
   };
 }

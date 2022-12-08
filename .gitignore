@@ -39,3 +39,8 @@ lerna-debug.log*
 
 # Environments
 .env
+
+# Private data
+/cert/*.crt
+/cert/*.pem
+/cert/*.key

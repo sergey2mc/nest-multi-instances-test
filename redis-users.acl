@@ -1,2 +1,2 @@
 user default off nopass allkeys allchannels allcommands
-user redis-user on ><redis-password> allkeys allchannels allcommands
+user redis-user on >redis-password allkeys allchannels allcommands

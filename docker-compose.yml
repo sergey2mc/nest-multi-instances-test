@@ -8,6 +8,9 @@ services:
     volumes:
       - ./redis.conf:/etc/redis/redis.conf
       - ./redis-users.acl:/etc/redis/redis-users.acl
+      - ./cert/redis-cert.crt:/etc/redis/redis-cert.crt
+      - ./cert/redis-key.key:/etc/redis/redis-key.key
+      - ./cert/entrust_2048_ca.cer:/etc/redis/entrust_2048_ca.cer
   nginx:
     build:
       context: .
